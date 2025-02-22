@@ -15,7 +15,7 @@ export default function App() {
         <Display />
         <div className="mt-4">
           {/* TODO: add Controller to Navigate */}
-          <div className="relative bg-gray-300 h-40 w-40 rounded-full text-gray-700 broder border-gray-400 max-h-56 cursor-pointer">
+          <div className="relative bg-gray-300 h-40 w-40 rounded-full text-gray-500 broder border-gray-400 max-h-56 cursor-pointer">
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 translate-y-3">
               <h2 className="uppercase font-sans font-bold text-sm">MENU</h2>
             </div>
