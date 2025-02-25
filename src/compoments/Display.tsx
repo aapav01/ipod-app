@@ -36,17 +36,18 @@ export default function Display({
         </div>
       </div>
       <div
-        className="overflow-auto flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full
+        className="overflow-auto flex-1 flex justify-center items-center overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full
       [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300"
       >
         {menuScreens[currentScreen] ? (
-          <Menu
-            items={menuScreens[currentScreen]}
-            selectedIndex={selectedIndex}
-          />
+          Array.isArray(menuScreens[currentScreen]) && (
+            <Menu
+              items={menuScreens[currentScreen]}
+              selectedIndex={selectedIndex}
+            />
+          )
         ) : (
           <LeafScreen
-            title={currentScreen}
             submenus={menuScreens[currentScreen.toLowerCase()]}
             selectedIndex={selectedIndex}
           />

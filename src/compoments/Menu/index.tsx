@@ -1,12 +1,11 @@
-export default function Menu({
-  items,
-  selectedIndex,
-}: {
+interface MenuProps {
   items: string[];
   selectedIndex: number;
-}) {
+}
+
+export default function Menu({ items, selectedIndex }: MenuProps) {
   return (
-    <div>
+    <div className="flex flex-col w-full">
       {items.map((item, index) => (
         <div
           key={index}

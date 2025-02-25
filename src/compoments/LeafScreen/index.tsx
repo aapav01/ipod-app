@@ -1,30 +1,23 @@
 /**
- * TODO: LeafScreen render a screen with a title or get ReactNode
- * @param {string} title - The title of the screen
+ * LeafScreen component
+ * @param {string[] | React.ReactNode} submenus
+ * @param {number} selectedIndex
  * @returns ReactElement
  */
 
 import Menu from "../Menu";
 
 type LeafScreenProps = {
-  title: string;
-  submenus?: string[];
+  submenus?: string[] | React.ReactNode;
   selectedIndex: number;
 };
 
-function LeafScreen({ title, submenus, selectedIndex }: LeafScreenProps) {
-  return (
-    <div>
-      {submenus ? (
-        <Menu items={submenus} selectedIndex={selectedIndex} />
-      ) : (
-        <>
-          <h1 className="text-2xl font-semibold text-black">{title}</h1>
-          <p className="text-gray-500">This is a leaf screen</p>
-        </>
-      )}
-    </div>
-  );
+function LeafScreen({ submenus, selectedIndex }: LeafScreenProps) {
+  if (Array.isArray(submenus)) {
+    return <Menu items={submenus} selectedIndex={selectedIndex} />;
+  } else {
+    return submenus;
+  }
 }
 
 export default LeafScreen;
