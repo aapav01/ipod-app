@@ -101,7 +101,7 @@ export default function ClickWheel({
       </div>
       <div
         onClick={onCenterClick}
-        className="absolute top-[25%] left-[25%] bg-gray-200 min-h-20 min-w-20 rounded-full border border-gray-400/50"
+        className="absolute top-[25%] left-[25%] bg-gray-200 transition-all hover:inset-shadow-sm inset-shadow-gray-500 min-h-20 min-w-20 rounded-full border border-gray-400/50"
       ></div>
     </div>
   );
