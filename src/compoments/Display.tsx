@@ -1,38 +1,8 @@
 import { BatteryFullIcon } from "lucide-react";
 import React from "react";
-
-const menuScreens: {
-  [key: string]: string[];
-} = {
-  main: ["Music", "Games", "Settings"],
-  music: ["All songs", "Artists", "Albums", "Playlists"],
-  settings: ["Shuffle", "Repeat", "Sound Check"],
-};
-
-function Menu({
-  items,
-  selectedIndex,
-}: {
-  items: string[];
-  selectedIndex: number;
-}) {
-  return (
-    <div className="menu p-2 text-white">
-      {items.map((item, index) => (
-        <div
-          key={index}
-          className={`p-1 ${index === selectedIndex ? "bg-blue-600" : ""}`}
-        >
-          {item}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function LeafScreen({ title }: { title: string }) {
-  return <div className="leaf-screen p-2 text-white">{title}</div>;
-}
+import Menu from "./Menu";
+import menuScreens from "./Menu/items";
+import LeafScreen from "./LeafScreen";
 
 export default function Display({
   screenStack,
@@ -57,9 +27,9 @@ export default function Display({
   });
 
   return (
-    <div className="flex min-h-44 w-full bg-black rounded-lg flex-col">
+    <div className="flex min-h-44 w-full bg-white rounded-lg flex-col">
       <div className="flex flex-row justify-between w-full h-6 bg-slate-400 text-xs p-1 rounded-t-lg">
-        <h1 className="font-base font-serif">Apavayan's IPod</h1>
+        <h1 className="font-base font-sans">Apavayan's IPod</h1>
         <div className="flex flex-row gap-1">
           <BatteryFullIcon size={16} className="fill-lime-400" />
           <p className="font-semibold text-black">{time}</p>

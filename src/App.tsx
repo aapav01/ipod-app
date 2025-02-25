@@ -2,14 +2,7 @@
 import { useState } from "react";
 import Display from "./compoments/Display";
 import ClickWheel from "./compoments/ClickWheel";
-
-const menuScreens: {
-  [key: string]: string[];
-} = {
-  main: ["Music", "Games", "Settings"],
-  music: ["All songs", "Artists", "Albums", "Playlists"],
-  settings: ["Shuffle", "Repeat", "Sound Check"],
-};
+import menuScreens from "./compoments/Menu/items";
 
 export default function App() {
   const [screenStack, setScreenStack] = useState(["main"]);
