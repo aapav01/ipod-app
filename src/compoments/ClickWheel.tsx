@@ -6,28 +6,29 @@ import {
 } from "lucide-react";
 import { useRef, useState } from "react";
 
+interface ClickWheelProps {
+  onMenuClick: () => void;
+  onCenterClick: () => void;
+  onSelectIndexChange: (index: number) => void;
+  selectedIndex: number;
+  N: number;
+}
+
 export default function ClickWheel({
   onMenuClick,
   onCenterClick,
   onSelectIndexChange,
   selectedIndex,
   N,
-}: {
-  onMenuClick: () => void;
-  onCenterClick: () => void;
-  onSelectIndexChange: (index: number) => void;
-  selectedIndex: number;
-  N: number;
-}) {
-  const wheelRef = useRef(null);
+}: ClickWheelProps) {
+  const wheelRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [totalAngleChange, setTotalAngleChange] = useState(0);
   const previousAngleRef = useRef(0);
   const lastReportedIndexRef = useRef(selectedIndex);
 
-  // TODO: Implement TypeScript types and back button functionality
 
-  const handleMouseDown = (event) => {
+  const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === wheelRef.current) {
       const wheel = wheelRef.current;
       const rect = wheel.getBoundingClientRect();
@@ -43,9 +44,10 @@ export default function ClickWheel({
     }
   };
 
-  const handleMouseMove = (event) => {
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     if (isDragging) {
       const wheel = wheelRef.current;
+      if (!wheel) return;
       const rect = wheel.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
