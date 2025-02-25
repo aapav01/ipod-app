@@ -1,4 +1,3 @@
-// App.tsx
 import { useState } from "react";
 import Display from "./compoments/Display";
 import ClickWheel from "./compoments/ClickWheel";
@@ -9,8 +8,7 @@ export default function App() {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const currentScreen = screenStack[screenStack.length - 1];
-  const isMenu = menuScreens[currentScreen] !== undefined;
-  const N = isMenu ? menuScreens[currentScreen].length : 0;
+  const N = Array.isArray(menuScreens[currentScreen]) ? menuScreens[currentScreen].length : 0;
 
   const onMenuClick = () => {
     if (screenStack.length > 1) {
@@ -20,7 +18,7 @@ export default function App() {
   };
 
   const onCenterClick = () => {
-    if (isMenu) {
+    if (Array.isArray(menuScreens[currentScreen])) {
       const selectedItem = menuScreens[currentScreen][selectedIndex];
       setScreenStack([...screenStack, selectedItem]);
       setSelectedIndex(0);
@@ -29,7 +27,7 @@ export default function App() {
 
   const onSelectIndexChange = (newIndex: number) => {
     // TODO: update logic to handle nested menus
-    if (isMenu) {
+    if (Array.isArray(menuScreens[currentScreen])) {
       setSelectedIndex(newIndex);
     }
   };
