@@ -27,7 +27,7 @@ export default function Display({
   });
 
   return (
-    <div className="flex min-h-44 w-full bg-white rounded-lg flex-col">
+    <div className="flex min-h-44 max-h-44 w-full bg-white rounded-lg flex-col">
       <div className="flex flex-row justify-between w-full h-6 bg-slate-400 text-xs p-1 rounded-t-lg">
         <h1 className="font-base font-sans">Apavayan's IPod</h1>
         <div className="flex flex-row gap-1">
@@ -35,14 +35,21 @@ export default function Display({
           <p className="font-semibold text-black">{time}</p>
         </div>
       </div>
-      <div className="screen flex-1">
+      <div
+        className="overflow-auto flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full
+      [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300"
+      >
         {menuScreens[currentScreen] ? (
           <Menu
             items={menuScreens[currentScreen]}
             selectedIndex={selectedIndex}
           />
         ) : (
-          <LeafScreen title={currentScreen} />
+          <LeafScreen
+            title={currentScreen}
+            submenus={menuScreens[currentScreen.toLowerCase()]}
+            selectedIndex={selectedIndex}
+          />
         )}
       </div>
     </div>

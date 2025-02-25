@@ -4,8 +4,27 @@
  * @returns ReactElement
  */
 
-function LeafScreen({ title }: { title: string }) {
-  return <div className="p-2 text-white">{title}</div>;
+import Menu from "../Menu";
+
+type LeafScreenProps = {
+  title: string;
+  submenus?: string[];
+  selectedIndex: number;
+};
+
+function LeafScreen({ title, submenus, selectedIndex }: LeafScreenProps) {
+  return (
+    <div>
+      {submenus ? (
+        <Menu items={submenus} selectedIndex={selectedIndex} />
+      ) : (
+        <>
+          <h1 className="text-2xl font-semibold text-black">{title}</h1>
+          <p className="text-gray-500">This is a leaf screen</p>
+        </>
+      )}
+    </div>
+  );
 }
 
 export default LeafScreen;

@@ -28,6 +28,7 @@ export default function App() {
   };
 
   const onSelectIndexChange = (newIndex: number) => {
+    // TODO: update logic to handle nested menus
     if (isMenu) {
       setSelectedIndex(newIndex);
     }
