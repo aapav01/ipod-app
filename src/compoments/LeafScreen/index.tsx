@@ -17,6 +17,8 @@ function LeafScreen({ submenus, selectedIndex }: LeafScreenProps) {
     return <Menu items={submenus} selectedIndex={selectedIndex} />;
   } else if (React.isValidElement(submenus)) {
     return submenus;
+  } else if (typeof submenus === "string") {
+    return <div>{submenus}</div>;
   } else {
     return <div>No content available.</div>;
   }
