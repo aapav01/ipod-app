@@ -1,6 +1,5 @@
 import { BatteryFullIcon } from "lucide-react";
 import React from "react";
-import Menu from "./Menu";
 import menuScreens from "./Menu/items";
 import LeafScreen from "./LeafScreen";
 
@@ -40,11 +39,7 @@ export default function Display({
         className="overflow-auto flex-1 flex justify-center items-center overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full
       [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300"
       >
-        {Array.isArray(menuContent) ? (
-          <Menu items={menuContent} selectedIndex={selectedIndex} />
-        ) : (
-          <LeafScreen submenus={menuContent} selectedIndex={selectedIndex} />
-        )}
+        <LeafScreen submenus={menuContent} selectedIndex={selectedIndex} />
       </div>
     </div>
   );
