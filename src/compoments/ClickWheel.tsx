@@ -45,23 +45,23 @@ export default function ClickWheel({
   };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (isDragging) {
-      const wheel = wheelRef.current;
-      if (!wheel) return;
-      const rect = wheel.getBoundingClientRect();
+    if (isDragging && wheelRef.current) {
+      const rect = wheelRef.current.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
       const mouseX = event.clientX;
       const mouseY = event.clientY;
       const currentAngle = Math.atan2(mouseY - centerY, mouseX - centerX);
-      let delta = currentAngle - previousAngleRef.current;
-      if (delta > Math.PI) delta -= 2 * Math.PI;
-      else if (delta < -Math.PI) delta += 2 * Math.PI;
-      setTotalAngleChange((prev) => prev + delta);
+      const delta = currentAngle - previousAngleRef.current;
+
+      const normalizedDelta = ((delta + Math.PI) % (2 * Math.PI)) - Math.PI;
+      setTotalAngleChange((prev) => prev + normalizedDelta);
       previousAngleRef.current = currentAngle;
+
       const threshold = Math.PI / 12; // 15 degrees
       const steps = Math.floor(totalAngleChange / threshold);
       const newIndex = Math.min(Math.max(selectedIndex + steps, 0), N - 1);
+
       if (newIndex !== lastReportedIndexRef.current) {
         onSelectIndexChange(newIndex);
         lastReportedIndexRef.current = newIndex;
