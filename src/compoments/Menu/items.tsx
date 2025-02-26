@@ -1,5 +1,7 @@
+
 import Games from "../LeafScreen/Games";
 import Settings from "../LeafScreen/Settings";
+import Song from "../LeafScreen/Song";
 
 interface MenuScreens {
   [key: string]: string[] | React.ReactNode;
@@ -24,9 +26,9 @@ const menuScreens: MenuScreens = {
   "all songs": ["Song 1", "Song 2", "Song 3"],
   artists: ["Artist 1", "Artist 2", "Artist 3"],
   albums: ["Album 1", "Album 2", "Album 3"],
-  "song 1": "Song 1 content",
-  "song 2": "Song 2 content",
-  "song 3": "Song 3 content",
+  "song 1": <Song title="Song 1" artist="Artist 1" album="Album 1" year={2021} duration={180} genre="Pop" lyrics="Lyrics" cover="" />,
+  "song 2": <Song title="Song 2" artist="Artist 2" album="Album 2" year={2021} duration={180} genre="Pop" lyrics="Lyrics" cover="" />,
+  "song 3": <Song title="Song 3" artist="Artist 3" album="Album 3" year={2021} duration={180} genre="Pop" lyrics="Lyrics" cover="" />,
   "artist 1": "Artist 1 content",
   "artist 2": "Artist 2 content",
   "artist 3": "Artist 3 content",
