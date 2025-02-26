@@ -14,6 +14,10 @@ interface ClickWheelProps {
   N: number;
 }
 
+// To Change the Sensitivity of the ClickWheel
+const PAN_THRESHOLD = 5; // pixels
+const ANGLE_THRESHOLD = Math.PI / 12; // 15 degrees
+
 export default function ClickWheel({
   onMenuClick,
   onCenterClick,
@@ -23,59 +27,74 @@ export default function ClickWheel({
 }: ClickWheelProps) {
   const wheelRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
-  const [totalAngleChange, setTotalAngleChange] = useState(0);
+  const accumulatedDeltaRef = useRef(0);
   const previousAngleRef = useRef(0);
-  const lastReportedIndexRef = useRef(selectedIndex);
-
+  const initialPositionRef = useRef({ x: 0, y: 0 });
 
   const handleMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (event.target === wheelRef.current) {
-      const wheel = wheelRef.current;
-      const rect = wheel.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const mouseX = event.clientX;
-      const mouseY = event.clientY;
-      const angle = Math.atan2(mouseY - centerY, mouseX - centerX);
-      setIsDragging(true);
-      setTotalAngleChange(0);
-      previousAngleRef.current = angle;
-      lastReportedIndexRef.current = selectedIndex;
-    }
+    const target = event.target as HTMLElement;
+    if (target.closest('button')) return;
+
+    const wheel = wheelRef.current;
+    if (!wheel) return;
+
+    const rect = wheel.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const mouseX = event.clientX;
+    const mouseY = event.clientY;
+
+    initialPositionRef.current = { x: mouseX, y: mouseY };
+    previousAngleRef.current = Math.atan2(mouseY - centerY, mouseX - centerX);
+    accumulatedDeltaRef.current = 0;
+    setIsDragging(true);
   };
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (isDragging && wheelRef.current) {
-      const rect = wheelRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const mouseX = event.clientX;
-      const mouseY = event.clientY;
-      const currentAngle = Math.atan2(mouseY - centerY, mouseX - centerX);
-      const delta = currentAngle - previousAngleRef.current;
+    if (!isDragging || !wheelRef.current) return;
 
-      const normalizedDelta = ((delta + Math.PI) % (2 * Math.PI)) - Math.PI;
-      setTotalAngleChange((prev) => prev + normalizedDelta);
-      previousAngleRef.current = currentAngle;
+    // Check pan threshold
+    const dx = event.clientX - initialPositionRef.current.x;
+    const dy = event.clientY - initialPositionRef.current.y;
+    if (Math.sqrt(dx * dx + dy * dy) < PAN_THRESHOLD) return;
 
-      const threshold = Math.PI / 12; // 15 degrees
-      const steps = Math.floor(totalAngleChange / threshold);
-      const newIndex = Math.min(Math.max(selectedIndex + steps, 0), N - 1);
+    const rect = wheelRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const currentAngle = Math.atan2(
+      event.clientY - centerY,
+      event.clientX - centerX
+    );
 
-      if (newIndex !== lastReportedIndexRef.current) {
+    let delta = currentAngle - previousAngleRef.current;
+    delta = ((delta + Math.PI) % (2 * Math.PI)) - Math.PI;
+    accumulatedDeltaRef.current += delta;
+
+    // Calculate steps based on accumulated angle change
+    const steps = Math.floor(accumulatedDeltaRef.current / ANGLE_THRESHOLD);
+    if (steps !== 0) {
+      const newIndex = Math.min(
+        Math.max(selectedIndex + steps, 0),
+        N - 1
+      );
+
+      if (newIndex !== selectedIndex) {
         onSelectIndexChange(newIndex);
-        lastReportedIndexRef.current = newIndex;
+        accumulatedDeltaRef.current -= steps * ANGLE_THRESHOLD;
       }
     }
+
+    previousAngleRef.current = currentAngle;
   };
 
   const handleMouseUp = () => {
     setIsDragging(false);
+    previousAngleRef.current = 0;
   };
 
   return (
     <div
-      className="relative bg-gray-300 h-40 w-40 rounded-full text-gray-500 border border-gray-400"
+      className="relative bg-gray-300 h-40 w-40 rounded-full text-gray-500 border border-gray-400 transition-transform duration-200"
       ref={wheelRef}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
