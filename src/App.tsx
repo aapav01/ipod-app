@@ -8,7 +8,8 @@ export default function App() {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const currentScreen = screenStack[screenStack.length - 1];
-  const N = Array.isArray(menuScreens[currentScreen]) ? menuScreens[currentScreen].length : 0;
+  const currentMenu = menuScreens[currentScreen.toLowerCase()];
+  const N = Array.isArray(currentMenu) ? currentMenu.length : 0;
 
   const onMenuClick = () => {
     if (screenStack.length > 1) {
@@ -18,10 +19,13 @@ export default function App() {
   };
 
   const onCenterClick = () => {
-    if (Array.isArray(menuScreens[currentScreen])) {
-      const selectedItem = menuScreens[currentScreen][selectedIndex];
-      if (selectedItem) {
-        setScreenStack([...screenStack, selectedItem]);
+    if (!Array.isArray(currentMenu)) return;
+
+    const selectedItem = currentMenu[selectedIndex];
+    if (typeof selectedItem === 'string') {
+      const nextScreen = selectedItem.toLowerCase();
+      if (menuScreens[nextScreen]) {
+        setScreenStack([...screenStack, nextScreen]);
         setSelectedIndex(0);
       } else {
         console.error("Invalid menu item selected.");
@@ -30,7 +34,6 @@ export default function App() {
   };
 
   const onSelectIndexChange = (newIndex: number) => {
-    // TODO: update logic to handle nested menus
     if (Array.isArray(menuScreens[currentScreen])) {
       setSelectedIndex(newIndex);
     }

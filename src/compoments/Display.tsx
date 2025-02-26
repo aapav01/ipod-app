@@ -11,7 +11,8 @@ export default function Display({
   screenStack: string[];
   selectedIndex: number;
 }) {
-  const currentScreen = screenStack[screenStack.length - 1];
+  const currentScreen = screenStack[screenStack.length - 1].toLowerCase();
+  const menuContent = menuScreens[currentScreen];
   const locale = "en";
   const [today, setDate] = React.useState(new Date());
 
@@ -39,18 +40,10 @@ export default function Display({
         className="overflow-auto flex-1 flex justify-center items-center overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full
       [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300"
       >
-        {menuScreens[currentScreen] ? (
-          Array.isArray(menuScreens[currentScreen]) && (
-            <Menu
-              items={menuScreens[currentScreen]}
-              selectedIndex={selectedIndex}
-            />
-          )
+        {Array.isArray(menuContent) ? (
+          <Menu items={menuContent} selectedIndex={selectedIndex} />
         ) : (
-          <LeafScreen
-            submenus={menuScreens[currentScreen.toLowerCase()]}
-            selectedIndex={selectedIndex}
-          />
+          <LeafScreen submenus={menuContent} selectedIndex={selectedIndex} />
         )}
       </div>
     </div>
