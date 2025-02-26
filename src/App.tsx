@@ -20,8 +20,12 @@ export default function App() {
   const onCenterClick = () => {
     if (Array.isArray(menuScreens[currentScreen])) {
       const selectedItem = menuScreens[currentScreen][selectedIndex];
-      setScreenStack([...screenStack, selectedItem]);
-      setSelectedIndex(0);
+      if (selectedItem) {
+        setScreenStack([...screenStack, selectedItem]);
+        setSelectedIndex(0);
+      } else {
+        console.error("Invalid menu item selected.");
+      }
     }
   };
 
